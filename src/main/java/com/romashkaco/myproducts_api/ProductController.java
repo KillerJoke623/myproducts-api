@@ -2,13 +2,15 @@ package com.romashkaco.myproducts_api;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -17,10 +19,34 @@ public class ProductController {
     @Autowired
     private ProductRepository productRepository;
 
+
     @GetMapping
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public ResponseEntity<List<Product>> getFilteredProducts(
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Double minPrice,
+            @RequestParam(required = false) Double maxPrice,
+            @RequestParam(required = false) Boolean inStock,
+            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "ASC") String sortDirection,
+            @RequestParam(defaultValue = "10") int limit) {
+
+        // Создаем спецификацию
+        Specification<Product> spec = Specification.where(ProductSpecifications.hasName(name))
+                .and(ProductSpecifications.hasPriceGreaterThanOrEqual(minPrice))
+                .and(ProductSpecifications.hasPriceLessThanOrEqual(maxPrice))
+                .and(ProductSpecifications.isAvailable(inStock));
+
+        // Сортировка
+        Sort.Direction direction = sortDirection.equalsIgnoreCase("DESC") ? Sort.Direction.DESC : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(0, limit, Sort.by(direction, sortBy));
+
+        // Получаем данные
+        List<Product> products = productRepository.findAll(spec, pageable).getContent();
+
+        return ResponseEntity.ok(products);
     }
+
+
 
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable int id) {
