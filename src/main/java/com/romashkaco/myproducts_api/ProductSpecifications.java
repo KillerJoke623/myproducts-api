@@ -1,5 +1,6 @@
 package com.romashkaco.myproducts_api;
 
+import com.romashkaco.myproducts_api.models.Product;
 import org.springframework.data.jpa.domain.Specification;
 
 public class ProductSpecifications {

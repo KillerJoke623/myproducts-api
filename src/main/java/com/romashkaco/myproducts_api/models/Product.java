@@ -1,4 +1,4 @@
-package com.romashkaco.myproducts_api;
+package com.romashkaco.myproducts_api.models;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -30,6 +30,9 @@ public class Product {
 
     @Min(value = 0, message = "Price must be at least 0")
     private double price = 0;
+
+    @Min(value = 0, message = "Quantity must be at least 0")
+    private int quantity = 0;
 
     private boolean available = false;
 }

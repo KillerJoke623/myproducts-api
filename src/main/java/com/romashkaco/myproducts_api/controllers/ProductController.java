@@ -1,5 +1,8 @@
-package com.romashkaco.myproducts_api;
+package com.romashkaco.myproducts_api.controllers;
 
+import com.romashkaco.myproducts_api.ProductSpecifications;
+import com.romashkaco.myproducts_api.models.Product;
+import com.romashkaco.myproducts_api.repositories.ProductRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
