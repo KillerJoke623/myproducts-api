@@ -69,4 +69,10 @@ public class ProductControllerTest {
         mockMvc.perform(get("/products/999"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    public void shouldDeleteProduct() throws Exception{
+        mockMvc.perform(delete("/products/0"))
+                .andExpect(status().isNotFound());
+    }
 }
