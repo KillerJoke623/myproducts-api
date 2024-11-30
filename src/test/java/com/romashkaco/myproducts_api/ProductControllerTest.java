@@ -49,7 +49,7 @@ public class ProductControllerTest {
 
     @Test
     void shouldFilterByName() throws Exception {
-        mockMvc.perform(get("/products")
+        mockMvc.perform(get("/api/products")
                         .param("name", "another")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -59,7 +59,7 @@ public class ProductControllerTest {
 
     @Test
     void shouldFilterByPriceGreaterThan() throws Exception {
-        mockMvc.perform(get("/products")
+        mockMvc.perform(get("/api/products")
                         .param("minPrice", "15.00")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -69,7 +69,7 @@ public class ProductControllerTest {
 
     @Test
     void shouldSortByName() throws Exception {
-        mockMvc.perform(get("/products")
+        mockMvc.perform(get("/api/products")
                         .param("sortBy", "name")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -78,7 +78,7 @@ public class ProductControllerTest {
 
     @Test
     void shouldLimitResults() throws Exception {
-        mockMvc.perform(get("/products")
+        mockMvc.perform(get("/api/products")
                         .param("limit", "2")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -87,7 +87,7 @@ public class ProductControllerTest {
 
     @Test
     void shouldHandleInvalidPriceParameter() throws Exception {
-        mockMvc.perform(get("/products")
+        mockMvc.perform(get("/api/products")
                         .param("minPrice", "invalid_number")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
@@ -99,7 +99,7 @@ public class ProductControllerTest {
 
     @Test
     void shouldApplyMultipleFiltersAndSortByName() throws Exception {
-        mockMvc.perform(get("/products")
+        mockMvc.perform(get("/api/products")
                         .param("name", "Product")
                         .param("minPrice", "10")
                         .param("maxPrice", "20")
@@ -113,7 +113,7 @@ public class ProductControllerTest {
 
     @Test
     void shouldApplyFiltersAndLimitResults() throws Exception {
-        mockMvc.perform(get("/products")
+        mockMvc.perform(get("/api/products")
                         .param("minPrice", "10")
                         .param("sortBy", "price")
                         .param("limit", "2")
