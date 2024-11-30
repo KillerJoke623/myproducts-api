@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/products")
+@RequestMapping("/api/products")
 public class ProductController {
     private final List<Product> products = new ArrayList<>();
     private int nextId = 0;
@@ -23,7 +23,7 @@ public class ProductController {
     @GetMapping("/{id}")
     public ResponseEntity<Product> getProductById(@PathVariable int id) {
         Optional<Product> product = products.stream().filter(p -> p.getId() == id).findFirst();
-        return product.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+        return product.map(ResponseEntity::ok).orElseThrow(() -> new EntityNotFoundException("Product with id " + id + " not found"));
     }
 
     @PostMapping
@@ -34,8 +34,9 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Product> updateProduct(@PathVariable int id, @Valid @RequestBody Product updatedProduct) {
+    public ResponseEntity<Product> updateProduct(@PathVariable int id, @Valid @RequestBody Product updatedProduct) throws Exception {
         Optional<Product> existingProduct = products.stream().filter(p -> p.getId() == id).findFirst();
+
         if (existingProduct.isPresent()) {
             Product product = existingProduct.get();
             product.setName(updatedProduct.getName());
@@ -44,7 +45,7 @@ public class ProductController {
             product.setAvailable(updatedProduct.isAvailable());
             return ResponseEntity.ok(product);
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            throw  new EntityNotFoundException("Product with id" + id + " not found");
         }
     }
 

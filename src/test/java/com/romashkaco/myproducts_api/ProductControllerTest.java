@@ -27,7 +27,7 @@ public class ProductControllerTest {
             }
         """;
 
-        mockMvc.perform(post("/products")
+        mockMvc.perform(post("/api/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(productJson))
                 .andExpect(status().isCreated())
@@ -44,7 +44,7 @@ public class ProductControllerTest {
             }
         """;
 
-        mockMvc.perform(post("/products")
+        mockMvc.perform(post("/api/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(invalidProductJson))
                 .andExpect(status().isBadRequest());
@@ -52,27 +52,28 @@ public class ProductControllerTest {
 
     @Test
     void shouldReturnAllProducts() throws Exception {
-        mockMvc.perform(get("/products"))
+        mockMvc.perform(get("/api/products"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.size()").isNotEmpty());
     }
 
     @Test
     public void shouldReturnProductById() throws Exception {
-        mockMvc.perform(get("/products/0"))
+        mockMvc.perform(get("/api/products/0"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(0));
     }
 
     @Test
     public void shouldReturnNotFoundForNonExistentProduct() throws Exception {
-        mockMvc.perform(get("/products/999"))
-                .andExpect(status().isNotFound());
+        mockMvc.perform(get("/api/products/999"))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.error").value("Product with id 999 not found"));
     }
 
     @Test
     public void shouldDeleteProduct() throws Exception{
-        mockMvc.perform(delete("/products/0"))
+        mockMvc.perform(delete("/api/products/0"))
                 .andExpect(status().isNotFound());
     }
 }
