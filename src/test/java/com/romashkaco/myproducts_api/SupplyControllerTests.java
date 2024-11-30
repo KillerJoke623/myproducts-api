@@ -54,7 +54,7 @@ public class SupplyControllerTests {
         supply.setProduct(testProduct);
         supply.setQuantity(50);
 
-        mockMvc.perform(post("/supplies")
+        mockMvc.perform(post("/api/supplies")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(supply)))
                 .andExpect(status().isCreated())
@@ -73,7 +73,7 @@ public class SupplyControllerTests {
         supply.setProduct(testProduct);
         supply.setQuantity(0);
 
-        mockMvc.perform(post("/supplies")
+        mockMvc.perform(post("/api/supplies")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(supply)))
                 .andExpect(status().isBadRequest());
@@ -87,7 +87,7 @@ public class SupplyControllerTests {
         supply1.setQuantity(30);
         supplyRepository.save(supply1);
 
-        mockMvc.perform(get("/supplies")
+        mockMvc.perform(get("/api/supplies")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
@@ -101,7 +101,7 @@ public class SupplyControllerTests {
         supply.setQuantity(20);
         Supply savedSupply = supplyRepository.save(supply);
 
-        mockMvc.perform(delete("/supplies/" + savedSupply.getId())
+        mockMvc.perform(delete("/api/supplies/" + savedSupply.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 

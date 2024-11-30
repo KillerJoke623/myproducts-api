@@ -58,7 +58,7 @@ public class SaleControllerTests {
         sale.setQuantity(10);
 
 
-        mockMvc.perform(post("/sales")
+        mockMvc.perform(post("/api/sales")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(sale)))
                 .andExpect(status().isCreated())
@@ -83,7 +83,7 @@ public class SaleControllerTests {
         sale.setQuantity(20);
         Sale savedSale = saleRepository.save(sale);
 
-        mockMvc.perform(delete("/sales/" + savedSale.getId())
+        mockMvc.perform(delete("/api/sales/" + savedSale.getId())
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
@@ -103,7 +103,7 @@ public class SaleControllerTests {
         sale.setQuantity(20);
         Sale savedSale = saleRepository.save(sale);
 
-        mockMvc.perform(get("/sales")
+        mockMvc.perform(get("/api/sales")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.length()").value(1));
